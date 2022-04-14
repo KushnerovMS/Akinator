@@ -7,5 +7,7 @@ int main ()
 
     Akinator.guess();
 
+    Akinator.getGraphOfTree();
+
     return 0;
 }

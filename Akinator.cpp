@@ -4,6 +4,7 @@
 #include <kms/Tree.h>
 #include <kms/Logs.h>
 #include <kms/UTF8Help.h>
+#include <kms/GraphDump.h>
 
 #include "Akinator.h"
 
@@ -147,6 +148,48 @@ void Akinator::destructTree (Tree::Node* tree)
     }
 
     delete tree;
+}
+
+void Akinator::getGraphOfTree (Tree::Node* node)
+{
+    if (node == nullptr) node = tree_;
+
+    static Graph* graph;
+    static GraphNode gnode;
+    static GraphEdge edge;
+    if (tree_ -> getRoot() -> getRootNode() == node)
+    {
+        graph = GraphOpen();
+
+        gnode.shape = RECTANGLE_SHAPE;
+        gnode.rounded = true;
+        gnode.color = 0xffffff;
+
+    }
+
+    gnode.id = node;
+
+    GraphAddNode (graph, &gnode, "%s", node -> getData());
+
+    if (node -> getLeftNode() != nullptr || node -> getRightNode() != nullptr)
+        fputc ('?', graph -> file);
+
+    if (node -> getLeftNode())
+    {
+        getGraphOfTree (node -> getLeftNode());
+        GraphAddEdge (graph, &edge, node, "", node -> getLeftNode(), "", 1, "нет");
+    }
+
+    if (node -> getRightNode())
+    {
+        getGraphOfTree (node -> getRightNode());
+        GraphAddEdge (graph, &edge, node, "", node -> getRightNode(), "", 1, "да");
+    }
+
+    if (tree_ -> getRoot() -> getRootNode() == node)
+    {
+        GraphDraw (graph, "Akinator tree.svg", "svg");
+    }
 }
 
 #undef DEFINE_TO_STRING_

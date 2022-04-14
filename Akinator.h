@@ -16,12 +16,13 @@ class Akinator
 
     public:
 
-        explicit Akinator   (const char* fileName);
-        ~Akinator ();
+        explicit    Akinator        (const char* fileName);
+                   ~Akinator        ();
 
-        void    guess       ();
+        void    guess               ();
 
-        Tree::Node* getTree ();
+        Tree::Node* getTree         ();
+        void        getGraphOfTree  (Tree::Node* node = nullptr);
 
 
     private:
