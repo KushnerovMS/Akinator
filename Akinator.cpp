@@ -21,7 +21,7 @@ char* readString (FILE* file)
     char* answ = (char*) calloc (MAX_STR_BUFFER + 1, sizeof (char));
     size_t len = 0;
 
-    ungetc ('\n', file);
+    ungetc (' ', file);
     fscanf (file, "%*[ \n]%"DEFINE_TO_STRING(MAX_STR_BUFFER)"[^\n{}]%n", answ, &len);
     answ = (char*) realloc (answ, len + 1);
 
@@ -82,13 +82,13 @@ bool _checkAnswer ()
 
     StrToLower (ans);
 
-    if (strcmp (ans, "да") == 0)
-        return true;
+    if (strcmp (ans, "нет") == 0)
+        return false;
 
-    if (strcmp (ans, "yes") == 0)
-        return true;
+    if (strcmp (ans, "no") == 0)
+        return false;
 
-    return false;
+    return true;
 }
 
 void Akinator::guess()

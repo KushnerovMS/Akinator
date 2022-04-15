@@ -35,6 +35,7 @@ int main ()
                  strcmp (str, "exit")           == 0)
         {
             free (str);
+            Akinator.getGraphOfTree();
             return 0;
         }
 
@@ -47,7 +48,6 @@ int main ()
     }
 
 
-    Akinator.getGraphOfTree();
 
     return 0;
 }
