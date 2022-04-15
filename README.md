@@ -1,9 +1,9 @@
 # Акинатор
 
-1. [Описание](description)
-2. [Компиляция](compiling)
-3. [Описание команд](cmddescr)
-4. [Текущее дерево](tree)
+1. [Описание](#description)
+2. [Компиляция](#compiling)
+3. [Описание команд](#cmddescr)
+4. [Текущее дерево](#tree)
 
 ## <a name = "description"></a> Описание
 
@@ -38,6 +38,6 @@
 
 Команда "getGraphOfTree()" рисует в svg файле текущее дерево Акинатора (файл будет находится в папке GraphDump)
 
-## <a name = "tree></a> Текущее дерево
+## <a name = "tree"></a> Текущее дерево
 
 ![A](https://github.com/KushnerovMS/Akinator/blob/main/GraphDump/Akinator%20tree.svg)
