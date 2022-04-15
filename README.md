@@ -2,7 +2,7 @@
 
 1. [Описание](description)
 2. [Компиляция](compiling)
-3. [Описание команд](cmd descr)
+3. [Описание команд](cmddescr)
 4. [Текущее дерево](tree)
 
 ## <a name = "description"></a> Описание
@@ -11,7 +11,13 @@
 
 ## <a name = "compiling"></a> Компиляция
 
-<b>Внимание:</b> Акинатор использует мои другие программы в виде библиотек, так что вам придется установит библиотеки [HtmlLogs](https://github.com/KushnerovMS/HtmlLogs) [UTF-8Help](https://github.com/KushnerovMS/UTF-8Help) [List](https://github.com/KushnerovMS/List) [GraphDump](https://github.com/KushnerovMS/GraphDump) и главная библиотека [Tree](https://github.com/KushnerovMS/Tree)
+<b>Внимание:</b> Акинатор использует мои другие программы в виде библиотек, так что вам придется установит библиотеки
+[HtmlLogs](https://github.com/KushnerovMS/HtmlLogs) (логгирование),
+[UTF-8Help](https://github.com/KushnerovMS/UTF-8Help) (работа с utf-8),
+[List](https://github.com/KushnerovMS/List) (для построения определения),
+[GraphDump](https://github.com/KushnerovMS/GraphDump) (для построения графа) и
+[Tree](https://github.com/KushnerovMS/Tree) (для работы с деревом)
+
 Скопировать репозиторий
 
     git clone git@github.com:KushnerovMS/Akinator.git
@@ -20,7 +26,7 @@
 Прописать в терминале команду `make`.
 Исполняемый файл будет лежать в ~/bin/
 
-## <a name = "cmd descr"></a> Описание команд
+## <a name = "cmddescr"></a> Описание команд
 
 Команда `guess()` запускает процедуру угадывания. Неверными считаются ответы "no" или "нет" (в любых регистрах). Если Акинатор не угадал, он спрашивает правильный ответ и какое свойство отличает этот объект от правильного и достраевет дерево. Таким образом Акинатора можно обучать.
 
@@ -32,6 +38,6 @@
 
 Команда "getGraphOfTree()" рисует в svg файле текущее дерево Акинатора (файл будет находится в папке GraphDump)
 
-## <a name = "Tree></a> Текущее дерево
+## <a name = "tree></a> Текущее дерево
 
 ![A](https://github.com/KushnerovMS/Akinator/blob/main/GraphDump/Akinator%20tree.svg)
