@@ -1,17 +1,20 @@
 #include <string.h>
 #include <assert.h>
+#include <math.h>
+#include <unistd.h>
 
 #include <kms/Tree.h>
 #include <kms/Logs.h>
 #include <kms/UTF8Help.h>
 #include <kms/GraphDump.h>
+#include <kms/List.h>
 
 #include "Akinator.h"
 
 #define DEFINE_TO_STRING_(a) #a
 #define DEFINE_TO_STRING(a) DEFINE_TO_STRING_(a)
 
-char* _getString (FILE* file)
+char* readString (FILE* file)
 {
     assert (file);
 
@@ -37,7 +40,7 @@ Akinator::Akinator (const char* fileName) :
         printf ("Я ничего не знаю о вашем мире.\n"
                 "Назовите мне какой-нибудь объект\n");
 
-        tree_ -> setData (_getString (stdin));
+        tree_ -> setData (readString (stdin));
 
         printf ("Теперь ");
     }
@@ -93,6 +96,7 @@ void Akinator::guess()
     Tree::Node* node = tree_;
 
     printf ("Загадайте кого(что)-нибудь\n");
+    sleep (3);
     
     while (node -> getLeftNode() != nullptr || node -> getRightNode() != nullptr)
     {
@@ -110,20 +114,96 @@ void Akinator::guess()
     {
         printf ("Как? А кто(что) это?\n");
 
-        char* object = _getString(stdin);
+        char* object = readString(stdin);
 
         node -> setRightNode (new Tree::Node(node -> getRoot(), object));
         node -> setLeftNode (new Tree::Node (node -> getRoot(), node -> getData()));
 
         printf ("Чем %s отличается от %s?\n%s ", object, node -> getData(), object);
 
-        node -> setData (_getString(stdin));
+        node -> setData (readString(stdin));
     }
+}
+
+bool Akinator::getDefinition ()
+{
+    //Stack nodeStack = {};
+    //StackCtor (&nodeStack, tree_ -> getRoot() -> getSize(), Tree::Node*);
+    List* path = ListCtr (tree_ -> getRoot() -> getSize(), sizeof (Tree::Root*));
+
+    printf ("Введите имя объекта: ");
+    char* objName = readString(stdin);
+
+    Tree::Node* node = tree_;
+
+    int cmpRes = 0;
+    while (node != nullptr && (
+          (node -> getLeftNode() != nullptr && node -> getRightNode() != nullptr) || 
+           strcmp (objName, (const char*) node -> getData()) != 0))
+    {
+        if (node -> getRightNode() != nullptr && node -> getLeftNode() != nullptr)
+        {
+            ListAdd (path, &node);
+
+            node = node -> getRightNode();
+        }
+        else
+        {
+            while (path -> size != 0 &&
+                   node == ( * (Tree::Node**) ListGet (path, path -> prev[0]) ) -> getLeftNode())
+            {
+                node = * (Tree::Node**) ListGet (path, path -> prev[0]);
+
+                ListDelete (path, path -> prev[0]);
+
+                if (path -> size == 0)
+                {
+                    node = nullptr;
+                    break;
+                }
+            }
+
+            if (path -> size != 0)
+                node = ( * (Tree::Node**) ListGet (path, path -> prev[0]) ) -> getLeftNode();
+        }
+    }
+
+    if (path -> size == 0 || node == nullptr)
+    {
+        printf ("Не знаю о таком объекте\n");
+
+        free (objName);
+        ListDtr (path);
+
+        return false;
+    }
+
+    printf ("%s: ", objName);
+
+    ListAdd (path, &node);
+
+    while (path -> size > 1)
+    {
+        if (( * (Tree::Node**) ListGet (path, path -> next[0])) -> getLeftNode() ==
+            ( * (Tree::Node**) ListGet (path, path -> next[path -> next[0]])))
+        printf ("не ");
+
+        printf ("%s, ", ( * (Tree::Node**) ListGet (path, path -> next[0])) -> getData());
+
+        ListDelete (path, path -> next[0]);
+    }
+
+    printf ("\b\b.\n");
+
+    free (objName);
+    ListDtr (path);
+
+    return true;
 }
 
 void* strReader_ (FILE* file, void* data)
 {
-    return _getString (file);
+    return readString (file);
 }
 
 void strWriter_ (FILE* file, const void* data)
@@ -137,8 +217,7 @@ void Akinator::destructTree (Tree::Node* tree)
 
     if (tree -> getLeftNode () != nullptr)
     {
-        destructTree (tree -> getLeftNode ());
-        tree -> setLeftNode (nullptr);
+        destructTree (tree -> getLeftNode ()); tree -> setLeftNode (nullptr);
     }
 
     if (tree -> getRightNode () != nullptr)
@@ -191,6 +270,7 @@ void Akinator::getGraphOfTree (Tree::Node* node)
         GraphDraw (graph, "Akinator tree.svg", "svg");
     }
 }
+
 
 #undef DEFINE_TO_STRING_
 #undef DEFINE_TO_STRING(a) DEFINE_TO_STRING_

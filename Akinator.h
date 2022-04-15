@@ -19,11 +19,11 @@ class Akinator
         explicit    Akinator        (const char* fileName);
                    ~Akinator        ();
 
-        void    guess               ();
+        void        guess           ();
+        bool        getDefinition   ();
 
         Tree::Node* getTree         ();
         void        getGraphOfTree  (Tree::Node* node = nullptr);
-
 
     private:
 
@@ -32,6 +32,7 @@ class Akinator
 
 #define MAX_STR_BUFFER 1000
 
+char*   readString           (FILE* file);
 void*   strReader_          (FILE* file, void* data);
 void    strWriter_          (FILE* file, const void* data);
 

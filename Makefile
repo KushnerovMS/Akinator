@@ -21,7 +21,7 @@ OBJDIR =./.obj
 OBJECTS=$(patsubst %.cpp, $(OBJDIR)/%.o, $(SOURCES))
 EXECUTABLE=Akinator
 EXEDIR=./bin
-LIBRARIES=kms/libTree.a kms/libLogs.a kms/libGraphDump.a kms/libUTF8Help.a
+LIBRARIES=kms/libTree.a kms/libList.a kms/libGraphDump.a kms/libLogs.a kms/libUTF8Help.a
 LIBDIR=./lib
 
 COMAPANY=kms
